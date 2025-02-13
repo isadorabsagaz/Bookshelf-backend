@@ -1,8 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const User = require('../models/userModel');
-const {createUser} = require("../models/userModel");
+const {createUser, findUserByEmail, isPasswordMatch} = require("../models/userModel");
 
 //signup auth controller
 const signup = async (req, res) => {
@@ -11,7 +10,7 @@ const signup = async (req, res) => {
     try {
         if (!name || !email || !password) return res.status(400).json({message: 'All fields are required'});
 
-        const existingUser = await User.findUserByEmail(email);
+        const existingUser = await findUserByEmail(email);
         if (existingUser.length > 0) return res.status(400).json({message: 'User already exists'});
 
         await createUser(name, email, password);
@@ -20,7 +19,7 @@ const signup = async (req, res) => {
     } catch (err) {
         res.status(500).json({message: 'Error creating user'});
     }
-}
+};
 
 //login auth controller
 const login = async (req, res) => {
@@ -28,13 +27,12 @@ const login = async (req, res) => {
     console.log(req.body);
 
     try {
-        const existingUser = await User.findUserByEmail(email);
+        const existingUser = await findUserByEmail(email);
         if (existingUser.length === 0) return res.status(400).json({message: 'User not found'});
 
         const user = existingUser[0];
-        console.log(user.password);
 
-        const match = await User.isPasswordMatch(password, user.password);
+        const match = await isPasswordMatch(password, user.password);
         if (!match) return res.status(400).json({message: 'Invalid password'});
 
         const token = jwt.sign({id: user.id, email: user.email}, process.env.JWT_SECRET, {expiresIn: '1h'});
@@ -44,6 +42,6 @@ const login = async (req, res) => {
     } catch (err) {
         res.status(500).json({message: 'Error on server', error: err.message});
     }
-}
+};
 
-module.exports = { signup, login };
+module.exports = { signup , login }

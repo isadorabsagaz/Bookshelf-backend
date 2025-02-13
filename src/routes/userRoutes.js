@@ -1,15 +1,12 @@
 const express = require('express');
-const pool = require("../config/database")
+const authMiddleware = require('../middlewares/authMiddleware');
+const { getUsers , getUserById ,  updateUser , deleteUser } = require('../controllers/userController');
 
 const router = express.Router();
 
-router.get('/users', async (req, res) => {
-    try {
-        const [rows] = await pool.query('SELECT * FROM users');
-        res.json(rows);
-    } catch (err) {
-        res.status(500).json({message: `Error: ${err}`});
-    }
-});
+router.get("/", getUsers);
+router.get("/:id", authMiddleware, getUserById);
+router.put("/:id", authMiddleware, updateUser);
+router.delete("/:id", authMiddleware, deleteUser);
 
 module.exports = router;
