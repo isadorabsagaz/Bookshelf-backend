@@ -15,7 +15,7 @@ app.use(morgan("dev"));     // logger
 
 app.use(
     cors({
-        origin: "http://localhost:5157",    //change to URL of the frontend
+        origin: "http://localhost:5173",    //change to URL of the frontend
         credentials: true,
     })
 );
