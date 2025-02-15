@@ -35,7 +35,7 @@ const login = async (req, res) => {
         const match = await isPasswordMatch(password, user.password);
         if (!match) return res.status(400).json({message: 'Invalid password'});
 
-        const token = jwt.sign({id: user.id, email: user.email}, process.env.JWT_SECRET, {expiresIn: '1h'});
+        const token = jwt.sign({id: user.id, email: user.email}, process.env.JWT_SECRET, {expiresIn: '24h'});
 
         res.status(200).json({message: 'User logged in successfully!', token: token});
 

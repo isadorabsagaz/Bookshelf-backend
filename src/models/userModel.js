@@ -40,6 +40,7 @@ const deleteUserById = async (id) => {
     await pool.query(query, [id]);
 };
 
+
 module.exports = {
     createUser,
     findUserByEmail,
