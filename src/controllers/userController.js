@@ -14,7 +14,7 @@ const {
 const getUsers = async (req, res) => {
     try {
         const [users] = await findAllUsers();
-        res.json(users);
+        res.status(200).json(users);
     } catch (err) {
         res.status(500).json({message: "Error getting users"});
     }
@@ -61,7 +61,7 @@ const getBooksList = async (req, res) => {
         const {id} = req.params;
 
         const [booksList] = await getUserBooks(id);
-        res.json([booksList]);
+        res.status(200).json([booksList]);
     } catch (err) {
         res.status(500).json({message: "Error getting books list"});
     }
