@@ -70,9 +70,10 @@ const getBooksList = async (req, res) => {
 const addToBooksList = async (req, res) => {
     try {
         const {id} = req.params;
+        console.log(req.body);
         const {key, title, first_publish_year, author_name, cover_i} = req.body;
 
-        await addUserBooks(id, key, title, first_publish_year, author_name, cover_i);
+        await addUserBooks(id, key, title, author_name, cover_i, first_publish_year);
         res.status(200).json({message: 'Book added successfully'});
     } catch (err) {
         res.status(500).json({message: "Error adding book", error: err.message});
