@@ -82,8 +82,8 @@ const addToBooksList = async (req, res) => {
 
 const deleteBookFromList = async (req, res) => {
     try {
-       const {id} = req.params;
-       const {key} = req.body;
+       const {id, key} = req.params;
+       console.log(req.params);
 
        await deleteBookById(id, key);
        res.status(200).json({message: 'Book deleted successfully'});

@@ -19,6 +19,6 @@ router.delete("/:id", authMiddleware, deleteUser);
 
 router.get("/:id/books", authMiddleware, getBooksList);
 router.post("/:id/books", authMiddleware, addToBooksList);
-router.delete("/:id/books", authMiddleware, deleteBookFromList);
+router.delete("/:id/books/:key", authMiddleware, deleteBookFromList);
 
 module.exports = router;
