@@ -6,8 +6,8 @@ const {
 } = require('../models/userModel');
 
 const {
-    addUserBooks,
     getUserBooks,
+    addUserBooks,
     deleteBookById
 } = require('../models/bookModel');
 
@@ -61,9 +61,9 @@ const getBooksList = async (req, res) => {
         const {id} = req.params;
 
         const [booksList] = await getUserBooks(id);
-        res.status(200).json([booksList]);
+        res.status(200).json(booksList);
     } catch (err) {
-        res.status(500).json({message: "Error getting books list"});
+        res.status(500).json({message: "Error getting books list", errors: err.message});
     }
 };
 
