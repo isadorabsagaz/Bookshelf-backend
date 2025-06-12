@@ -1,23 +1,44 @@
-const pool = require("../config/database");
+const {DataTypes} = require('sequelize');
+const sequelize = require('../config/database');
+const User = require('./userModel')
 
-const getUserBooks = async (id) => {
-    const query = 'SELECT `key`, title, author_name, cover_i, first_publish_year FROM bookshelf WHERE user_id = ?';
-    const [rows] = await pool.query(query, [id]);
-    return [rows];
-};
+const Bookshelf = sequelize.define('Bookshelf', {
+    id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+    },
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id',
+        }
+    },
+    key: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    title: {
+        type: DataTypes.STRING,
+    },
+    author_name: {
+        type: DataTypes.STRING,
+    },
+    cover_i: {
+        type: DataTypes.STRING,
+    },
+    first_publish_year: {
+        type: DataTypes.INTEGER,
+    }
+}, {
+    tableName: 'bookshelf',
+    timestamps: false,
+});
 
-const addUserBooks = async (userId, key, title, author_name, cover_i, first_publish_year) => {
-    const query = 'INSERT INTO bookshelf (user_id, `key`, title, author_name, cover_i, first_publish_year) VALUES (?,?,?,?,?,?)';
-    await pool.query(query, [userId, key, title, author_name, cover_i, first_publish_year]);
-};
+User.hasMany(Bookshelf, { foreignKey: 'user_id' });
+Bookshelf.belongsTo(User, { foreignKey: 'user_id' });
 
-const deleteBookById = async (id, key) => {
-    const query = 'DELETE FROM bookshelf WHERE user_id = ? AND `key` = ?';
-    await pool.query(query, [id, key]);
-};
-
-module.exports = {
-    getUserBooks,
-    addUserBooks,
-    deleteBookById
-}
+module.exports = Bookshelf;
