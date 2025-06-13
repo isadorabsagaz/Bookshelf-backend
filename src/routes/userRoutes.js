@@ -10,6 +10,8 @@ const {
     deleteBookFromList
 } = require('../controllers/userController');
 
+const {generatePDF} = require("../controllers/PDFgeneratorController");
+
 const router = express.Router();
 
 router.get("/", getUsers);
@@ -20,5 +22,7 @@ router.delete("/:id", authMiddleware, deleteUser);
 router.get("/:id/books", authMiddleware, getBooksList);
 router.post("/:id/books", authMiddleware, addToBooksList);
 router.delete("/:id/books/:key", authMiddleware, deleteBookFromList);
+
+router.get("/:id/books/pdf", authMiddleware, generatePDF)
 
 module.exports = router;
